@@ -1,28 +1,71 @@
 
+const form = document.querySelector('form');
 const nameField = document.querySelector('#name');
+const emailField = document.querySelector('#email');
+
 const jobRoleTitle = document.querySelector('#title');
 const jobRoleField = document.querySelector('#other-job-role');
+
 const shirtDesignField = document.querySelector('#design');
 const shirtColorField = document.querySelector('#color');
 const shirtColorOptions = shirtColorField.children;
+
 const activityOptions = document.querySelector('#activities-box');
 const totalCost = document.querySelector('#activities-cost');
 let updatedCost = 0;
+let totalActivities = 0;
+
 const paymentMethod = document.querySelector('#payment');
+
 const payment_CreditCard = document.querySelector('#credit-card');
+const creditCardNum = document.querySelector('#cc-num');
+const zipCode = document.querySelector('#zip');
+const cvv = document.querySelector('#cvv');
+
 const payment_Paypal = document.querySelector('#paypal');
 const payment_Bitcoin = document.querySelector('#bitcoin');
 
-nameField.focus();
-paymentMethod.value = payment_CreditCard;
+const nameValidator = name => {
+    const nameRegex = /^([a-z]|[A-Z])+ ?([a-z]|[A-Z])+? ?([a-z]|[A-Z])+?$/;
+    return nameRegex.test(name);
+};
 
+const emailValidator = email => {
+    const emailRegex = /^[^@]+@[^@]+\.com$/;
+    return emailRegex.test(email);
+};
+
+const activitiesValidator = activitiesChecked => activitiesChecked >= 1;
+
+const creditCardValidator = ccNumber => {
+    const ccNumRegex = /\d{13,16}/;
+    return ccNumRegex.test(ccNumber);
+}
+
+const zipCodeValidator = zip => {
+    const zipCodeRegex = /^\d{5}$/;
+    return zipCodeRegex.test(zip);
+}
+
+const cvvValidator = cvv => {
+    const cvvRegex = /^\d{3}$/;
+    return cvvRegex.test(cvv);
+}
+
+
+
+nameField.focus();
 jobRoleField.style.display = 'none';
+shirtColorField.disabled = true;
+paymentMethod.value = payment_CreditCard;
+payment_Bitcoin.style.display = 'none';
+payment_Paypal.style.display = 'none';
+
 
 jobRoleTitle.addEventListener('change', () => {
     jobRoleTitle.value === 'other' ? jobRoleField.style.display = 'inline-block' : jobRoleField.style.display = 'none';
 });
 
-shirtColorField.disabled = true;
 
 // Listen for any changes to the T-Shirt design field, and update color choices accordingly
 shirtDesignField.addEventListener('change', () => {
@@ -59,16 +102,16 @@ activityOptions.addEventListener('change', e => {
     
     if (e.target.tagName === 'INPUT' && e.target.checked === true) {
         updatedCost += parseInt(activityCost);
+        totalActivities++;
     } else if (e.target.tagName === 'INPUT' && e.target.checked === false) {
         updatedCost -= parseInt(activityCost);
+        totalActivities--;
     }
     
     totalCost.innerHTML = `Total: $${ updatedCost }`
 });
 
-payment_Bitcoin.style.display = 'none';
-payment_Paypal.style.display = 'none';
-
+// Listen for changes to the payment method selection, and display the corresponding information
 paymentMethod.addEventListener('change', () => {
     if (paymentMethod.value === 'paypal') {
         payment_CreditCard.style.display = 'none';
@@ -83,10 +126,47 @@ paymentMethod.addEventListener('change', () => {
         payment_Paypal.style.display = 'none';
         payment_Bitcoin.style.display = 'none';
     }
-
-    /* 
-    set default behaviour for CC payment
-    if bitcoin payment, show bitcoin data and hide everything else
-    if paypal payment, show paypal data and hide everything else
-    */
 });
+
+// Validate that the form has all the required information, and in the correct format
+form.addEventListener('submit', e => {
+    if (!nameValidator(nameField.value)) {
+        e.preventDefault();
+        console.log('Invalid name entry. Please try again.');
+    } else if (!emailValidator(emailField.value)) {
+        e.preventDefault();
+        console.log('Invalid email entry. Please try again.');
+    } else if (!activitiesValidator(totalActivities)) {
+        e.preventDefault();
+        console.log('Please select AT LEAST one activity.');
+    } else if (paymentMethod.value === '') {
+        e.preventDefault();
+        console.log('Please select a payment method.');
+    } else if (paymentMethod.value === 'credit-card' && !creditCardValidator(creditCardNum.value)) {
+        e.preventDefault();
+        console.log('Please enter a valid credit card number.');
+    } else if (paymentMethod.value === 'credit-card' && !zipCodeValidator(zipCode.value)) {
+        e.preventDefault();
+        console.log('Please enter a valid zip code.');
+    } else if (paymentMethod.value === 'credit-card' && !cvvValidator(cvv.value)) {
+        e.preventDefault();
+        console.log('Please enter a valid CVV.');
+    }
+
+/* NEED TO ADD FUNCTIONALITY FOR CHECKING VALID EXPIRY DATE ON CREDIT CARD */    
+    
+});
+
+
+
+
+
+
+
+       
+// e.preventDefault();
+// console.log('Please enter a valid credit card number.');
+// } else if (!zipCodeValidator(zipCode.value)) {
+// e.preventDefault();
+// console.log('Please enter a valid zipcode.');
+// }
