@@ -8,8 +8,13 @@ const shirtColorOptions = shirtColorField.children;
 const activityOptions = document.querySelector('#activities-box');
 const totalCost = document.querySelector('#activities-cost');
 let updatedCost = 0;
+const paymentMethod = document.querySelector('#payment');
+const payment_CreditCard = document.querySelector('#credit-card');
+const payment_Paypal = document.querySelector('#paypal');
+const payment_Bitcoin = document.querySelector('#bitcoin');
 
 nameField.focus();
+paymentMethod.value = payment_CreditCard;
 
 jobRoleField.style.display = 'none';
 
@@ -59,4 +64,29 @@ activityOptions.addEventListener('change', e => {
     }
     
     totalCost.innerHTML = `Total: $${ updatedCost }`
+});
+
+payment_Bitcoin.style.display = 'none';
+payment_Paypal.style.display = 'none';
+
+paymentMethod.addEventListener('change', () => {
+    if (paymentMethod.value === 'paypal') {
+        payment_CreditCard.style.display = 'none';
+        payment_Paypal.style.display = 'block';
+        payment_Bitcoin.style.display = 'none';
+    } else if (paymentMethod.value === 'bitcoin') {
+        payment_CreditCard.style.display = 'none';
+        payment_Paypal.style.display = 'none';
+        payment_Bitcoin.style.display = 'block';
+    } else {
+        payment_CreditCard.style.display = 'block';
+        payment_Paypal.style.display = 'none';
+        payment_Bitcoin.style.display = 'none';
+    }
+
+    /* 
+    set default behaviour for CC payment
+    if bitcoin payment, show bitcoin data and hide everything else
+    if paypal payment, show paypal data and hide everything else
+    */
 });
