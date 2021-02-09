@@ -11,6 +11,7 @@ const shirtColorField = document.querySelector('#color');
 const shirtColorOptions = shirtColorField.children;
 
 const activityOptions = document.querySelector('#activities-box');
+const activityCheckboxes = document.querySelectorAll('label > input[type="checkbox"]');
 const totalCost = document.querySelector('#activities-cost');
 let updatedCost = 0;
 let totalActivities = 0;
@@ -51,7 +52,6 @@ const cvvValidator = cvv => {
     const cvvRegex = /^\d{3}$/;
     return cvvRegex.test(cvv);
 }
-
 
 
 nameField.focus();
@@ -151,14 +151,23 @@ form.addEventListener('submit', e => {
     } else if (paymentMethod.value === 'credit-card' && !cvvValidator(cvv.value)) {
         e.preventDefault();
         console.log('Please enter a valid CVV.');
-    }
-
-/* NEED TO ADD FUNCTIONALITY FOR CHECKING VALID EXPIRY DATE ON CREDIT CARD */    
-    
+    }    
 });
 
 
-
+// Event listeners to add more visible focus classes to activity checkboxes
+for (let i = 0; i < activityCheckboxes.length; i++) {
+    activityCheckboxes[i].addEventListener('focus', e => {
+        if (e.target.tagName === 'INPUT') {
+            e.target.classList.add('focus');
+        }
+    });
+    activityCheckboxes[i].addEventListener('blur', e => {
+        if (e.target.tagName === 'INPUT') {
+            e.target.classList.remove('focus');
+        }
+    });
+}
 
 
 
