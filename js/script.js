@@ -159,12 +159,12 @@ form.addEventListener('submit', e => {
 for (let i = 0; i < activityCheckboxes.length; i++) {
     activityCheckboxes[i].addEventListener('focus', e => {
         if (e.target.tagName === 'INPUT') {
-            e.target.classList.add('focus');
+            e.target.parentNode.classList.add('focus');
         }
     });
     activityCheckboxes[i].addEventListener('blur', e => {
         if (e.target.tagName === 'INPUT') {
-            e.target.classList.remove('focus');
+            e.target.parentNode.classList.remove('focus');
         }
     });
 }
