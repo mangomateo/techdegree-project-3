@@ -132,26 +132,69 @@ paymentMethod.addEventListener('change', () => {
 form.addEventListener('submit', e => {
     if (!nameValidator(nameField.value)) {
         e.preventDefault();
-        console.log('Invalid name entry. Please try again.');
-    } else if (!emailValidator(emailField.value)) {
+        nameField.parentNode.classList.add('not-valid');
+        nameField.parentNode.classList.remove('valid');
+        nameField.nextElementSibling.style.display = "block";
+    } else {
+        nameField.parentNode.classList.add('valid');
+        nameField.parentNode.classList.remove('not-valid');
+        nameField.nextElementSibling.style.display = "none";
+    }
+
+    if (!emailValidator(emailField.value)) {
         e.preventDefault();
-        console.log('Invalid email entry. Please try again.');
-    } else if (!activitiesValidator(totalActivities)) {
+        emailField.parentNode.classList.add('not-valid');
+        emailField.parentNode.classList.remove('valid');
+        emailField.nextElementSibling.style.display = "block";
+    } else {
+        emailField.parentNode.classList.add('valid');
+        emailField.parentNode.classList.remove('not-valid');
+        emailField.nextElementSibling.style.display = "none";
+    }
+    
+    if (!activitiesValidator(totalActivities)) {
         e.preventDefault();
-        console.log('Please select AT LEAST one activity.');
-    } else if (paymentMethod.value === '') {
+        activityOptions.parentNode.classList.add('not-valid');
+        activityOptions.parentNode.classList.remove('valid');
+        document.querySelector('#activities-hint').style.display = "block";
+    } else {
+        activityOptions.parentNode.classList.add('valid');
+        activityOptions.parentNode.classList.remove('not-valid');
+        document.querySelector('#activities-hint').style.display = "none";
+    } 
+
+    if (!creditCardValidator(creditCardNum.value)) {
         e.preventDefault();
-        console.log('Please select a payment method.');
-    } else if (paymentMethod.value === 'credit-card' && !creditCardValidator(creditCardNum.value)) {
+        creditCardNum.parentNode.classList.add('not-valid');
+        creditCardNum.parentNode.classList.remove('valid');
+        creditCardNum.nextElementSibling.style.display = "block";
+    } else {
+        creditCardNum.parentNode.classList.add('valid');
+        creditCardNum.parentNode.classList.remove('not-valid');
+        creditCardNum.nextElementSibling.style.display = "none";        
+    } 
+    
+    if (!zipCodeValidator(zipCode.value)) {
         e.preventDefault();
-        console.log('Please enter a valid credit card number.');
-    } else if (paymentMethod.value === 'credit-card' && !zipCodeValidator(zipCode.value)) {
+        zipCode.parentNode.classList.add('not-valid');
+        zipCode.parentNode.classList.remove('valid');
+        zipCode.nextElementSibling.style.display = "block";
+    } else {
+        zipCode.parentNode.classList.add('valid');
+        zipCode.parentNode.classList.remove('not-valid');
+        zipCode.nextElementSibling.style.display = "none";
+    } 
+    
+    if (!cvvValidator(cvv.value)) {
         e.preventDefault();
-        console.log('Please enter a valid zip code.');
-    } else if (paymentMethod.value === 'credit-card' && !cvvValidator(cvv.value)) {
-        e.preventDefault();
-        console.log('Please enter a valid CVV.');
-    }    
+        cvv.parentNode.classList.add('not-valid');
+        cvv.parentNode.classList.remove('valid');
+        cvv.nextElementSibling.style.display = "block";
+    } else {
+        cvv.parentNode.classList.add('valid');
+        cvv.parentNode.classList.remove('not-valid');
+        cvv.nextElementSibling.style.display = "none";
+    }
 });
 
 
@@ -168,14 +211,3 @@ for (let i = 0; i < activityCheckboxes.length; i++) {
         }
     });
 }
-
-
-
-
-       
-// e.preventDefault();
-// console.log('Please enter a valid credit card number.');
-// } else if (!zipCodeValidator(zipCode.value)) {
-// e.preventDefault();
-// console.log('Please enter a valid zipcode.');
-// }
