@@ -18,7 +18,6 @@ let updatedCost = 0;
 let totalActivities = 0;
 
 const paymentMethod = document.querySelector('#payment');
-// const option_CreditCard = document.querySelector('option[value="credit-card"]');
 const payment_CreditCard = document.querySelector('#credit-card');
 const creditCardNum = document.querySelector('#cc-num');
 const zipCode = document.querySelector('#zip');
@@ -28,7 +27,7 @@ const payment_Paypal = document.querySelector('#paypal');
 const payment_Bitcoin = document.querySelector('#bitcoin');
 
 const nameValidator = name => {
-    const nameRegex = /^([a-z]|[A-Z])+ ?([a-z]|[A-Z])+? ?([a-z]|[A-Z])+?$/;
+    const nameRegex = /^([a-z]|[A-Z])* ?([a-z]|[A-Z])*? ?([a-z]|[A-Z])*?$/;
     return nameRegex.test(name);
 };
 
@@ -134,9 +133,6 @@ activityOptions.addEventListener('change', e => {
 
 
 
-
-
-
 // Listen for changes to the payment method selection, and display the corresponding information
 paymentMethod.addEventListener('change', () => {
     if (paymentMethod.value === 'paypal') {
@@ -154,9 +150,10 @@ paymentMethod.addEventListener('change', () => {
     }
 });
 
-// Validate that the form has all the required information, and in the correct format
-form.addEventListener('submit', e => {
-    if (!nameValidator(nameField.value)) {
+
+// Real-time validation for the name field 
+nameField.addEventListener('keyup', e => {
+    if (!nameValidator(nameField.value) || nameField.value === '') {
         e.preventDefault();
         nameField.parentNode.classList.add('not-valid');
         nameField.parentNode.classList.remove('valid');
@@ -166,7 +163,11 @@ form.addEventListener('submit', e => {
         nameField.parentNode.classList.remove('not-valid');
         nameField.nextElementSibling.style.display = "none";
     }
+});
 
+
+// Validate that the form has all the required information, and in the correct format
+form.addEventListener('submit', e => {
     if (!emailValidator(emailField.value)) {
         e.preventDefault();
         emailField.parentNode.classList.add('not-valid');
