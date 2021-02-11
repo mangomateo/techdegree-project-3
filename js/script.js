@@ -35,6 +35,13 @@ const emailValidator = email => {
     const emailRegex = /^[^@]+@[^@]+\.com$/;
     return emailRegex.test(email);
 };
+const emailAtChecker = email => {
+    return email.includes('@');
+}
+
+const emailEndsWithDotCom = email => {
+    return email.endsWith('.com');
+}
 
 const activitiesValidator = activitiesChecked => activitiesChecked >= 1;
 
@@ -168,7 +175,19 @@ nameField.addEventListener('keyup', e => {
 
 // Validate that the form has all the required information, and in the correct format
 form.addEventListener('submit', e => {
-    if (!emailValidator(emailField.value)) {
+    if (!emailAtChecker(emailField.value)) {
+        e.preventDefault();
+        emailField.parentNode.classList.add('not-valid');
+        emailField.parentNode.classList.remove('valid');
+        emailField.nextElementSibling.textContent = "The email must contain @";
+        emailField.nextElementSibling.style.display = "block";
+    } else if (!emailEndsWithDotCom(emailField.value)) {
+        e.preventDefault();
+        emailField.parentNode.classList.add('not-valid');
+        emailField.parentNode.classList.remove('valid');
+        emailField.nextElementSibling.textContent = "The email must end with '.com'";
+        emailField.nextElementSibling.style.display = "block";
+    } else if (!emailValidator(emailField.value)) {
         e.preventDefault();
         emailField.parentNode.classList.add('not-valid');
         emailField.parentNode.classList.remove('valid');
