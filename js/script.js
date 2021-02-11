@@ -11,13 +11,14 @@ const shirtColorField = document.querySelector('#color');
 const shirtColorOptions = shirtColorField.children;
 
 const activityOptions = document.querySelector('#activities-box');
+const dayActivity = activityOptions.children;
 const activityCheckboxes = document.querySelectorAll('label > input[type="checkbox"]');
 const totalCost = document.querySelector('#activities-cost');
 let updatedCost = 0;
 let totalActivities = 0;
 
 const paymentMethod = document.querySelector('#payment');
-const option_CreditCard = document.querySelector('option[value="credit-card"]');
+// const option_CreditCard = document.querySelector('option[value="credit-card"]');
 const payment_CreditCard = document.querySelector('#credit-card');
 const creditCardNum = document.querySelector('#cc-num');
 const zipCode = document.querySelector('#zip');
@@ -54,6 +55,7 @@ const cvvValidator = cvv => {
 }
 
 
+// Set default form values when the page loads
 nameField.focus();
 jobRoleField.style.display = 'none';
 shirtColorField.disabled = true;
@@ -83,6 +85,7 @@ shirtDesignField.addEventListener('change', () => {
             }
         }
         shirtColorField.selectedIndex = 1;
+
     } else if (shirtDesignField.value === 'heart js') {
         shirtColorOptions[0].setAttribute('hidden', true);
         for (let i = 1; i < shirtColorOptions.length; i++) {
@@ -94,24 +97,45 @@ shirtDesignField.addEventListener('change', () => {
         }
         shirtColorField.selectedIndex = 4;
     }
-    // shirtColorField.value = shirtColorOptions[0];
 });
 
 
+// Check for what activities have been selected and disable conflicting activities
 // Update totalCost based on activities that have been selected
 activityOptions.addEventListener('change', e => {
     let activityCost = e.target.getAttribute('data-cost');
+    let selectionDate = e.target.dataset.dayAndTime;
+    let selectionName = e.target.name;
     
     if (e.target.tagName === 'INPUT' && e.target.checked === true) {
+        for (let i = 0; i < dayActivity.length; i++) {
+            if (selectionDate === dayActivity[i].firstElementChild.dataset.dayAndTime &&
+                selectionName !== dayActivity[i].firstElementChild.name) {
+                    dayActivity[i].classList.add('disabled');
+                    dayActivity[i].firstElementChild.disabled = true;
+             }
+        }; 
         updatedCost += parseInt(activityCost);
         totalActivities++;
     } else if (e.target.tagName === 'INPUT' && e.target.checked === false) {
+        for (let i = 0; i < dayActivity.length; i++) {
+            if (selectionDate === dayActivity[i].firstElementChild.dataset.dayAndTime &&
+                selectionName !== dayActivity[i].firstElementChild.name) {
+                    dayActivity[i].classList.remove('disabled');
+                    dayActivity[i].firstElementChild.disabled = false;
+             }
+        }; 
         updatedCost -= parseInt(activityCost);
         totalActivities--;
     }
     
     totalCost.innerHTML = `Total: $${ updatedCost }`
 });
+
+
+
+
+
 
 // Listen for changes to the payment method selection, and display the corresponding information
 paymentMethod.addEventListener('change', () => {
