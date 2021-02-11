@@ -39,7 +39,7 @@ const emailValidator = email => {
 const activitiesValidator = activitiesChecked => activitiesChecked >= 1;
 
 const creditCardValidator = ccNumber => {
-    const ccNumRegex = /\d{13,16}/;
+    const ccNumRegex = /^\d{13,16}$/;
     return ccNumRegex.test(ccNumber);
 }
 
@@ -82,6 +82,7 @@ shirtDesignField.addEventListener('change', () => {
                 shirtColorOptions[i].removeAttribute('hidden');
             }
         }
+        shirtColorField.selectedIndex = 1;
     } else if (shirtDesignField.value === 'heart js') {
         shirtColorOptions[0].setAttribute('hidden', true);
         for (let i = 1; i < shirtColorOptions.length; i++) {
@@ -91,8 +92,9 @@ shirtDesignField.addEventListener('change', () => {
                 shirtColorOptions[i].removeAttribute('hidden');
             }
         }
+        shirtColorField.selectedIndex = 4;
     }
-    shirtColorField.value = shirtColorOptions[0];
+    // shirtColorField.value = shirtColorOptions[0];
 });
 
 
@@ -163,7 +165,7 @@ form.addEventListener('submit', e => {
         document.querySelector('#activities-hint').style.display = "none";
     } 
 
-    if (!creditCardValidator(creditCardNum.value)) {
+    if (paymentMethod.value === 'credit-card' && !creditCardValidator(creditCardNum.value)) {
         e.preventDefault();
         creditCardNum.parentNode.classList.add('not-valid');
         creditCardNum.parentNode.classList.remove('valid');
@@ -174,7 +176,7 @@ form.addEventListener('submit', e => {
         creditCardNum.nextElementSibling.style.display = "none";        
     } 
     
-    if (!zipCodeValidator(zipCode.value)) {
+    if (paymentMethod.value === 'credit-card' && !zipCodeValidator(zipCode.value)) {
         e.preventDefault();
         zipCode.parentNode.classList.add('not-valid');
         zipCode.parentNode.classList.remove('valid');
@@ -185,7 +187,7 @@ form.addEventListener('submit', e => {
         zipCode.nextElementSibling.style.display = "none";
     } 
     
-    if (!cvvValidator(cvv.value)) {
+    if (paymentMethod.value === 'credit-card' && !cvvValidator(cvv.value)) {
         e.preventDefault();
         cvv.parentNode.classList.add('not-valid');
         cvv.parentNode.classList.remove('valid');
