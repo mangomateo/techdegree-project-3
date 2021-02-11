@@ -17,7 +17,7 @@ let updatedCost = 0;
 let totalActivities = 0;
 
 const paymentMethod = document.querySelector('#payment');
-
+const option_CreditCard = document.querySelector('option[value="credit-card"]');
 const payment_CreditCard = document.querySelector('#credit-card');
 const creditCardNum = document.querySelector('#cc-num');
 const zipCode = document.querySelector('#zip');
@@ -57,7 +57,7 @@ const cvvValidator = cvv => {
 nameField.focus();
 jobRoleField.style.display = 'none';
 shirtColorField.disabled = true;
-paymentMethod.value = payment_CreditCard;
+paymentMethod.selectedIndex = 1;
 payment_Bitcoin.style.display = 'none';
 payment_Paypal.style.display = 'none';
 
