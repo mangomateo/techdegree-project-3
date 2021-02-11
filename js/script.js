@@ -27,7 +27,7 @@ const payment_Paypal = document.querySelector('#paypal');
 const payment_Bitcoin = document.querySelector('#bitcoin');
 
 const nameValidator = name => {
-    const nameRegex = /^([a-z]|[A-Z])* ?([a-z]|[A-Z])*? ?([a-z]|[A-Z])*?$/;
+    const nameRegex = /^([a-z]|[A-Z]){1,} ?([a-z]|[A-Z])*? ?([a-z]|[A-Z])*?$/;
     return nameRegex.test(name);
 };
 
@@ -160,7 +160,7 @@ paymentMethod.addEventListener('change', () => {
 
 // Real-time validation for the name field 
 nameField.addEventListener('keyup', e => {
-    if (!nameValidator(nameField.value) || nameField.value === '') {
+    if (!nameValidator(nameField.value)) {
         e.preventDefault();
         nameField.parentNode.classList.add('not-valid');
         nameField.parentNode.classList.remove('valid');
@@ -175,6 +175,12 @@ nameField.addEventListener('keyup', e => {
 
 // Validate that the form has all the required information, and in the correct format
 form.addEventListener('submit', e => {
+    if (nameField.value === '') {
+        e.preventDefault();
+        nameField.parentNode.classList.add('not-valid');
+        nameField.parentNode.classList.remove('valid');
+        nameField.nextElementSibling.style.display = "block"
+    }
     if (!emailAtChecker(emailField.value)) {
         e.preventDefault();
         emailField.parentNode.classList.add('not-valid');
